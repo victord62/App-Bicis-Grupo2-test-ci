@@ -26,6 +26,7 @@ import org.hamcrest.CustomTypeSafeMatcher;
 import org.hamcrest.Matcher;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -52,6 +53,11 @@ public class SuggestedStationsUITest {
     // manually manage the activity
     private ActivityScenario<MainView> activityScenario;
 
+    @BeforeClass
+    public static void setupClass() {
+        FeatureManager.setAirplaneMode(true);
+    }
+
     @Before
     public void setup() {
         setLocalData();
@@ -73,8 +79,16 @@ public class SuggestedStationsUITest {
      */
     @Test
     public void testUI_01_estacionesAlternativasExito() {
+        try {
+            Thread.sleep(100000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
         onView(withId(R.id.menuItemFavorites)).perform(click());
         onView(withText(R.string.viewFavoriteStations)).perform(click());
+
+
 
         onData(anything()).inAdapterView(withId(R.id.lvFavoriteStations)).atPosition(3)
                 .onChildView(withId(R.id.tvAlias)).check(matches(withText("Trabajo")));
@@ -135,11 +149,11 @@ public class SuggestedStationsUITest {
     @Test
     public void testUI_02_estacionesAlternativasInsuficientes() {
 
-        try {
+        /*try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
-        }
+        }*/
 
         onView(withId(R.id.menuItemFavorites)).perform(click());
         onView(withText(R.string.viewFavoriteStations)).perform(click());
