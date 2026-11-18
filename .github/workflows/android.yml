@@ -54,30 +54,12 @@ jobs:
           emulator-options: -no-window -gpu off -no-snapshot -noaudio -no-boot-anim
           script: ./gradlew clean jacocoTestReport
 
-      # Bundle everything Gradle wrote under app/build/reports (unit test HTML,
-      # connected-test HTML and the JaCoCo HTML/XML report) into a single archive.
-      # It is written outside the workspace so it is never committed by accident.
-      - name: Zip test reports
-        if: always()
-        working-directory: ./AndroidProject
-        run: |
-          mkdir -p "$RUNNER_TEMP/artifacts"
-          if [ -d app/build/reports ]; then
-            zip -r "$RUNNER_TEMP/artifacts/android-test-reports.zip" app/build/reports
-          else
-            echo "::warning::app/build/reports does not exist, nothing to zip"
-          fi
-
-      # The artifact is stored by GitHub, so it survives the runner VM being
-      # destroyed and can be downloaded from the run's summary page.
       - name: Android tests reports
         if: always()
         uses: actions/upload-artifact@v7
         with:
           name: test-reports
-          path: ${{ runner.temp }}/artifacts/android-test-reports.zip
-          if-no-files-found: warn
-          retention-days: 30
+          path: ./AndroidProject/app/build/reports/
 
       - name: Android tests outputs
         if: always()
@@ -85,7 +67,6 @@ jobs:
         with:
           name: test-outputs
           path: ./AndroidProject/app/build/outputs/
-          if-no-files-found: warn
 
   # build:
   #   name: Build APK
