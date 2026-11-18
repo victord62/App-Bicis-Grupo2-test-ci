@@ -141,7 +141,8 @@ public class FeatureManager {
                     NetworkCapabilities capabilities = connectivityManager.getNetworkCapabilities(activeNetwork);
 
                     if (capabilities != null) {
-                        if (capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)) {
+                        if (capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+                                && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)) {
                             ready = true;
                         } else {
                             try {
