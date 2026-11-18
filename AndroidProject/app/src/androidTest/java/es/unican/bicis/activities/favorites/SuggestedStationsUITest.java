@@ -134,6 +134,13 @@ public class SuggestedStationsUITest {
      */
     @Test
     public void testUI_02_estacionesAlternativasInsuficientes() {
+
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
         onView(withId(R.id.menuItemFavorites)).perform(click());
         onView(withText(R.string.viewFavoriteStations)).perform(click());
 
